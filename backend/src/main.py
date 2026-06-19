@@ -6,6 +6,7 @@ from src.infra.receipt_repository.inmemory import InMemoryReceiptRepository
 
 app = FastAPI()
 
+ai_repo = InMemoryAIRepository()
 receipt_repo = InMemoryReceiptRepository()
 receipt_service = ReceiptService()
 
@@ -21,7 +22,7 @@ def upload_receipt(
 ):
     file_bytes = file.file.read()
 
-    receipt_service.upload(file_bytes, InMemoryAIRepository(), receipt_repo)
+    receipt_service.upload(file_bytes, ai_repo, receipt_repo)
 
     return {"message": f"File '{file.filename}' uploaded successfully!"}
 
