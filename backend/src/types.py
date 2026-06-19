@@ -1,1 +1,16 @@
-ReceiptData = dict[str, str]  # Placeholder for actual data structure
+from dataclasses import dataclass
+from datetime import datetime
+
+
+@dataclass
+class ReceiptDataItem:
+    name: str
+    price: int  # in cents
+    quantity: int
+
+
+@dataclass
+class ReceiptData:
+    date: datetime
+    items: list[ReceiptDataItem]
+    total: int  # in cents
