@@ -1,0 +1,22 @@
+info:
+  name: Upload Receipt
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{api_url}}/receipt"
+  body:
+    type: multipart-form
+    data:
+      - name: file
+        type: file
+        value:
+          - /home/thiagotolotti/receipt-app/backend/samples/image_sample.jpg
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
