@@ -4,5 +4,9 @@ from ...types import ReceiptData
 
 class ReceiptRepository(ABC):
     @abstractmethod
-    def save_receipt(self, data: ReceiptData):
+    def save(self, data: ReceiptData):
+        pass
+    
+    @abstractmethod
+    def get_all(self) -> list[ReceiptData]:
         pass
