@@ -8,6 +8,6 @@ class InMemoryReceiptRepository(ReceiptRepository):
 
     def save(self, data: ReceiptData):
         self.receipts.append(data)
-        
+
     def get_all(self) -> list[ReceiptData]:
         return self.receipts

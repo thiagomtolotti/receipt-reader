@@ -1,0 +1,16 @@
+{
+  "python.analysis.extraPaths": ["backend"],
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "strict",
+
+  "ruff.importStrategy": "fromEnvironment",
+
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll": "always"
+    }
+  }
+}
