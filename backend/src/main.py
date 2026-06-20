@@ -1,12 +1,22 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, UploadFile
 
 from src.application.main import ReceiptService
-from src.infra.ai_repository.inmemory import InMemoryAIRepository
+from src.infra.ai_repository.gemini import GeminiAIRepository
 from src.infra.receipt_repository.inmemory import InMemoryReceiptRepository
+
+load_dotenv()
 
 app = FastAPI()
 
-ai_repo = InMemoryAIRepository()
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY is not set in the environment variables.")
+
+ai_repo = GeminiAIRepository(api_key=GEMINI_API_KEY)
 receipt_repo = InMemoryReceiptRepository()
 receipt_service = ReceiptService()
 
