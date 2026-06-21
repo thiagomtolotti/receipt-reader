@@ -1,10 +1,9 @@
-import os
-from pathlib import Path
-
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, UploadFile
+from scripts.migrate import migrate
 
 from src.application.main import ReceiptService
+from src.constants import DB_PATH, GEMINI_API_KEY
 from src.infra.ai_repository.gemini import GeminiAIRepository
 from src.infra.receipt_repository.sqlite import SQLiteReceiptRepository
 
@@ -12,14 +11,11 @@ load_dotenv()
 
 app = FastAPI()
 
-ROOT_DIR = Path(__file__).parent.parent
-DATA_DIR = ROOT_DIR / "data"
-
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-DB_PATH = DATA_DIR / "db.sqlite"
-
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY is not set in the environment variables.")
+
+if not DB_PATH.exists():
+    migrate()
 
 ai_repo = GeminiAIRepository(api_key=GEMINI_API_KEY)
 receipt_repo = SQLiteReceiptRepository(db_path=DB_PATH)
