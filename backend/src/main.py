@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, UploadFile
 from scripts.migrate import migrate
 
@@ -6,8 +5,6 @@ from src.application.main import ReceiptService
 from src.constants import DB_PATH, GEMINI_API_KEY
 from src.infra.ai_repository.gemini import GeminiAIRepository
 from src.infra.receipt_repository.sqlite import SQLiteReceiptRepository
-
-load_dotenv()
 
 app = FastAPI()
 
