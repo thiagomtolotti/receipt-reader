@@ -1,6 +1,6 @@
-from src.types import ReceiptData
 from src.infra.ai_repository.types import AIRepository
 from src.infra.receipt_repository.types import ReceiptRepository
+from src.types import ReceiptData
 
 
 class ReceiptService:
@@ -8,7 +8,10 @@ class ReceiptService:
         pass
 
     def upload(
-        self, image: bytes, ai_repo: AIRepository, receipt_repo: ReceiptRepository
+        self,
+        image: bytes,
+        ai_repo: AIRepository,
+        receipt_repo: ReceiptRepository,
     ):
         # 1.Sends image to AI repository
         extracted_data = ai_repo.extract_data(image)
