@@ -12,5 +12,6 @@ class ReceiptDataItem:
 @dataclass
 class ReceiptData:
     date: datetime
+    store_name: str
     items: list[ReceiptDataItem]
     total: int  # in cents

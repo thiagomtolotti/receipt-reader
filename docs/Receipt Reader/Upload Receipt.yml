@@ -12,7 +12,7 @@ http:
       - name: file
         type: file
         value:
-          - /home/thiagotolotti/receipt-app/backend/samples/image_sample.jpg
+          - /home/thiago/Documents/receipt-reader/backend/samples/nota_sample.png
   auth: inherit
 
 settings:
