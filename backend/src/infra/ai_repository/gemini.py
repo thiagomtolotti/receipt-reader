@@ -1,29 +1,41 @@
+from datetime import datetime
 from typing import Optional
 
 from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
 
-from src.domain.receipt import Receipt
+from src.domain.receipt import Receipt, ReceiptItem
 
 from .types import AIRepository
-
-
-class ReceiptItem(BaseModel):
-    description: str
-    quantity: int = 1
-    price: float
 
 
 class InvalidReceiptError(Exception):
     pass
 
 
+class GeminiReceiptItem(BaseModel):
+    description: str
+    quantity: int = 1
+    price: float
+
+
+class GeminiReceiptDTO(BaseModel):
+    date: datetime = Field(..., description="The date when the receipt was issued.")
+    store_name: str = Field(
+        ..., description="The name of the store where the receipt was issued."
+    )
+    items: list[GeminiReceiptItem] = Field(
+        ..., description="A list of items on the receipt."
+    )
+    total: int = Field(..., description="The total amount of the receipt in cents.")
+
+
 class GeminiResponseSchema(BaseModel):
     is_valid_receipt: bool = Field(
         description="Set to True if the image is explicitly a receipt or invoice. Set to False if the image is a car, landscape, person, or anything else."
     )
-    data: Optional["Receipt"] = Field(
+    data: Optional["GeminiReceiptDTO"] = Field(
         default=None,
         description="The extracted data from the receipt. This field should be null if is_valid_receipt is false.",
     )
@@ -61,4 +73,16 @@ class GeminiAIRepository(AIRepository):
                 "The response indicates a valid receipt, but no data was extracted."
             )
 
-        return data.data
+        return Receipt(
+            date=data.data.date,
+            store_name=data.data.store_name,
+            items=[
+                ReceiptItem(
+                    name=item.description,
+                    price=int(item.price * 100),  # Convert dollars to cents
+                    quantity=item.quantity,
+                )
+                for item in data.data.items
+            ],
+            total=data.data.total,
+        )

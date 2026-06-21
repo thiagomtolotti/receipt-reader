@@ -9,5 +9,5 @@ class ReceiptRepository(ABC):
         pass
 
     @abstractmethod
-    def get_all(self) -> list[Receipt]:
+    def list_(self) -> list[Receipt]:
         pass

@@ -9,5 +9,5 @@ class InMemoryReceiptRepository(ReceiptRepository):
     def save(self, data: Receipt):
         self.receipts.append(data)
 
-    def get_all(self) -> list[Receipt]:
+    def list_(self) -> list[Receipt]:
         return self.receipts

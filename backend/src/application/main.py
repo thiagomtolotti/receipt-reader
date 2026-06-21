@@ -20,4 +20,4 @@ class ReceiptService:
         receipt_repo.save(extracted_data)
 
     def list_receipts(self, receipt_repo: ReceiptRepository) -> list[Receipt]:
-        return receipt_repo.get_all()
+        return receipt_repo.list_()
