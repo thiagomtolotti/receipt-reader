@@ -1,13 +1,13 @@
-from src.types import ReceiptData
+from src.domain.receipt import Receipt
 from src.infra.receipt_repository.types import ReceiptRepository
 
 
 class InMemoryReceiptRepository(ReceiptRepository):
     def __init__(self):
-        self.receipts: list[ReceiptData] = []
+        self.receipts: list[Receipt] = []
 
-    def save(self, data: ReceiptData):
+    def save(self, data: Receipt):
         self.receipts.append(data)
 
-    def get_all(self) -> list[ReceiptData]:
+    def get_all(self) -> list[Receipt]:
         return self.receipts

@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 
-from src.types import ReceiptData
+from src.domain.receipt import Receipt
 
 from .types import ReceiptRepository
 
@@ -13,7 +13,7 @@ class SQLiteReceiptRepository(ReceiptRepository):
     def _get_connection(self):
         return sqlite3.connect(self._db_path)
 
-    def save(self, data: ReceiptData):
+    def save(self, data: Receipt):
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
@@ -27,7 +27,7 @@ class SQLiteReceiptRepository(ReceiptRepository):
             )
             conn.commit()
 
-    def get_all(self) -> list[ReceiptData]:
+    def get_all(self) -> list[Receipt]:
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT id, amount, date FROM receipts")

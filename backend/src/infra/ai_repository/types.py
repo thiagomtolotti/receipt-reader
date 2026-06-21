@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from ...types import ReceiptData
+from src.domain.receipt import Receipt
 
 
 class AIRepository(ABC):
     @abstractmethod
-    def extract_data(self, image: bytes) -> ReceiptData:
+    def extract_data(self, image: bytes) -> Receipt:
         pass

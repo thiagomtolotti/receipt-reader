@@ -4,7 +4,7 @@ from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
 
-from src.types import ReceiptData
+from src.domain.receipt import Receipt
 
 from .types import AIRepository
 
@@ -23,7 +23,7 @@ class GeminiResponseSchema(BaseModel):
     is_valid_receipt: bool = Field(
         description="Set to True if the image is explicitly a receipt or invoice. Set to False if the image is a car, landscape, person, or anything else."
     )
-    data: Optional["ReceiptData"] = Field(
+    data: Optional["Receipt"] = Field(
         default=None,
         description="The extracted data from the receipt. This field should be null if is_valid_receipt is false.",
     )
@@ -33,7 +33,7 @@ class GeminiAIRepository(AIRepository):
     def __init__(self, api_key: str):
         self.client = genai.Client(api_key=api_key)
 
-    def extract_data(self, image: bytes) -> ReceiptData:
+    def extract_data(self, image: bytes) -> Receipt:
         response = self.client.models.generate_content(  # type: ignore
             model="gemini-2.5-flash",
             contents=[

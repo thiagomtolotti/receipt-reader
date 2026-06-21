@@ -1,6 +1,6 @@
+from src.domain.receipt import Receipt
 from src.infra.ai_repository.types import AIRepository
 from src.infra.receipt_repository.types import ReceiptRepository
-from src.types import ReceiptData
 
 
 class ReceiptService:
@@ -19,5 +19,5 @@ class ReceiptService:
         # 2.Update database with extracted data
         receipt_repo.save(extracted_data)
 
-    def list_receipts(self, receipt_repo: ReceiptRepository) -> list[ReceiptData]:
+    def list_receipts(self, receipt_repo: ReceiptRepository) -> list[Receipt]:
         return receipt_repo.get_all()
