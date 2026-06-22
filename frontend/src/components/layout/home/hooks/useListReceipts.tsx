@@ -55,7 +55,7 @@ interface ReceiptItemDTO {
 }
 
 async function fetchReceipts() {
-  const response = await fetch('http://localhost:8000/receipts')
+  const response = await fetch('http://localhost:8000/receipt')
 
   if (!response.ok) {
     throw new Error('Failed to fetch receipts')

@@ -1,4 +1,3 @@
-import { Button } from '#/components/ui/button'
 import {
   Table,
   TableBody,
@@ -7,16 +6,21 @@ import {
   TableHeader,
   TableRow,
 } from '#/components/ui/table'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '#/components/ui/tooltip'
-import useListReceipts from './hooks/useListReceipts'
-import type { Receipt } from './hooks/useListReceipts'
-import { Trash } from 'lucide-react'
+
 import ReceiptModal from './receipt_modal'
 import DeleteReceiptModal from './delete_receipt_modal'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '#/components/ui/empty'
+import { X } from 'lucide-react'
+
+import type { Receipt } from './hooks/useListReceipts'
+
+import useListReceipts from './hooks/useListReceipts'
 
 export default function ReceiptsTable() {
   const { data } = useListReceipts()
@@ -35,6 +39,8 @@ export default function ReceiptsTable() {
         {data?.map((receipt) => (
           <ReceiptsTable.Row key={receipt.id} receipt={receipt} />
         ))}
+
+        {data?.length === 0 && <ReceiptsTable.Empty />}
       </TableBody>
     </Table>
   )
@@ -68,5 +74,25 @@ ReceiptsTable.Actions = ({ receipt }: ReceiptsTableActionsProps) => {
 
       <DeleteReceiptModal id={receipt.id} />
     </div>
+  )
+}
+
+ReceiptsTable.Empty = () => {
+  return (
+    <TableRow className="hover:bg-transparent!">
+      <TableCell colSpan={9999}>
+        <Empty className="my-10">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <X />
+            </EmptyMedia>
+            <EmptyTitle>No receipts found</EmptyTitle>
+            <EmptyDescription>
+              Try adding some receipts to see them here.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </TableCell>
+    </TableRow>
   )
 }
