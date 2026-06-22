@@ -12,8 +12,8 @@ import {
 
 import { useState } from 'react'
 import useUploadReceiptImage from './hooks/useUploadReceiptImage'
-import ReceiptModal from './receipt_modal'
 import type { Receipt } from './hooks/useListReceipts'
+import ReceiptForm from './receipt_form'
 
 export default function AddReceiptModal() {
   const [step, setStep] = useState<'form' | 'confirmation'>('form')
@@ -25,11 +25,13 @@ export default function AddReceiptModal() {
         <Button>Create new</Button>
       </DialogTrigger>
 
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add Receipt</DialogTitle>
+      <DialogContent className="max-w-lg!">
+        <DialogHeader className="mb-4">
+          <DialogTitle>
+            <h2 className="font-bold text-xl">Add Receipt</h2>
+          </DialogTitle>
           <DialogDescription>
-            Upload your receipt image, we will process it for you.
+            Upload your receipt image and we will process it for you.
           </DialogDescription>
         </DialogHeader>
 
@@ -91,5 +93,5 @@ interface ConfirmationStepProps {
 }
 
 AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
-  return <ReceiptModal.Content receipt={receipt} />
+  return <ReceiptForm receipt={receipt} />
 }
