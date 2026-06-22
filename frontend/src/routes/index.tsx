@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
 import {
   Table,
   TableBody,
@@ -8,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '#/components/ui/table'
+import useListReceipts from '#/components/layout/home/hooks/useListReceipts'
 
 export const Route = createFileRoute('/')({ component: Home })
 
@@ -28,18 +28,11 @@ function Home() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.receipts.map((receipt) => (
-            <TableRow key={receipt.id}>
-              <TableCell>
-                {new Date(receipt.date).toLocaleDateString('pt-BR')}
-              </TableCell>
+          {data?.map((receipt) => (
+            <TableRow key={receipt.id} className="cursor-pointer">
+              <TableCell>{receipt.date}</TableCell>
               <TableCell>{receipt.store_name}</TableCell>
-              <TableCell>
-                {(receipt.total / 100).toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })}
-              </TableCell>
+              <TableCell>{receipt.total}</TableCell>
               <TableCell></TableCell>
             </TableRow>
           ))}
@@ -47,14 +40,4 @@ function Home() {
       </Table>
     </div>
   )
-}
-
-function useListReceipts() {
-  return useQuery({
-    queryKey: ['receipts'],
-    queryFn: async () => {
-      const response = await fetch('http://localhost:8000/receipts')
-      return response.json()
-    },
-  })
 }
