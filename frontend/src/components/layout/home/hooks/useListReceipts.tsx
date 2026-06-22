@@ -39,7 +39,7 @@ export default function useListReceipts(): UseQueryResult<Receipt[], Error> {
   })
 }
 
-interface ReceiptDTO {
+export interface ReceiptDTO {
   id: string
   date: string
   store_name: string
@@ -47,7 +47,7 @@ interface ReceiptDTO {
   items: ReceiptItemDTO[]
 }
 
-interface ReceiptItemDTO {
+export interface ReceiptItemDTO {
   id: string
   name: string
   price: number

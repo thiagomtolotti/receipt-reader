@@ -11,6 +11,7 @@ import {
 } from '#/components/ui/dialog'
 
 import { useState } from 'react'
+import useUploadReceiptImage from './hooks/useUploadReceiptImage'
 
 export default function AddReceiptModal() {
   return (
@@ -34,10 +35,15 @@ export default function AddReceiptModal() {
 }
 
 AddReceiptModal.Form = () => {
+  const { mutateAsync } = useUploadReceiptImage()
   const [file, setFile] = useState<File | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
+    if (!file) throw new Error('No file selected')
+
+    await mutateAsync(file)
   }
 
   return (
