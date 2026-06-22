@@ -1,13 +1,22 @@
 import { useQuery } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 export interface Receipt {
   id: string
   date: Date
   store_name: string
   total: string
+  items: ReceiptItem[]
 }
 
-export default function useListReceipts() {
+export interface ReceiptItem {
+  id: string
+  name: string
+  price: string
+  quantity: number
+}
+
+export default function useListReceipts(): UseQueryResult<Receipt[], Error> {
   return useQuery({
     queryKey: ['receipts'],
     queryFn: async () => await fetchReceipts(),
@@ -19,6 +28,13 @@ export default function useListReceipts() {
           style: 'currency',
           currency: 'BRL',
         }),
+        items: receipt.items.map((item) => ({
+          ...item,
+          price: (item.price / 100).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }),
+        })),
       })),
   })
 }

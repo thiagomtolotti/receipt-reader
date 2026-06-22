@@ -14,7 +14,8 @@ import {
 } from '#/components/ui/tooltip'
 import useListReceipts from './hooks/useListReceipts'
 import type { Receipt } from './hooks/useListReceipts'
-import { Pen, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
+import ReceiptModal from './receipt_modal'
 
 export default function ReceiptsTable() {
   const { data } = useListReceipts()
@@ -49,32 +50,23 @@ ReceiptsTable.Row = ({ receipt }: ReceiptsTableRowProps) => {
       <TableCell>{receipt.store_name}</TableCell>
       <TableCell>{receipt.total}</TableCell>
       <TableCell>
-        <ReceiptsTable.Actions />
+        <ReceiptsTable.Actions receipt={receipt} />
       </TableCell>
     </TableRow>
   )
 }
 
-ReceiptsTable.Actions = () => {
+interface ReceiptsTableActionsProps {
+  receipt: Receipt
+}
+
+ReceiptsTable.Actions = ({ receipt }: ReceiptsTableActionsProps) => {
   return (
     <div className="flex gap-2">
-      <ReceiptsTable.EditButton />
+      <ReceiptModal receipt={receipt} />
 
       <ReceiptsTable.DeleteButton />
     </div>
-  )
-}
-
-ReceiptsTable.EditButton = () => {
-  return (
-    <Tooltip>
-      <TooltipTrigger>
-        <Button size="icon">
-          <Pen />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>Edit receipt</TooltipContent>
-    </Tooltip>
   )
 }
 
