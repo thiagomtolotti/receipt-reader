@@ -1,13 +1,9 @@
-from uuid import UUID
-
-from fastapi import Depends, FastAPI, UploadFile
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from scripts.migrate import migrate
 
-from src.application.main import ReceiptService
-from src.constants import DB_PATH, GEMINI_API_KEY
-from src.infra.ai_repository.gemini import GeminiAIRepository
-from src.infra.receipt_repository.sqlite import SQLiteReceiptRepository
+from src.constants import DB_PATH
+from src.presentation.receipt_router import ReceiptRouter
 
 app = FastAPI()
 
@@ -19,45 +15,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-if not GEMINI_API_KEY:
-    raise ValueError("GEMINI_API_KEY is not set in the environment variables.")
 
 if not DB_PATH.exists():
     migrate()
 
-ai_repo = GeminiAIRepository(api_key=GEMINI_API_KEY)
-receipt_repo = SQLiteReceiptRepository(db_path=DB_PATH)
-receipt_service = ReceiptService()
-
 
 @app.get("/")
 def ping():
-    return {"message": "Service is alive!"}
+    return {"message": "Receipt service is alive!"}
 
 
-@app.post("/receipt")
-def upload_receipt(
-    file: UploadFile, receipt_service: ReceiptService = Depends(lambda: receipt_service)
-):
-    file_bytes = file.file.read()
-
-    receipt_service.upload(file_bytes, ai_repo, receipt_repo)
-
-    return {"message": f"File '{file.filename}' uploaded successfully!"}
-
-
-@app.get("/receipts")
-def get_receipts(receipt_service: ReceiptService = Depends(lambda: receipt_service)):
-    receipts = receipt_service.list_receipts(receipt_repo)
-
-    return {"receipts": receipts}
-
-
-@app.delete("/receipt/{receipt_id}")
-def delete_receipt(
-    receipt_id: UUID,
-    receipt_service: ReceiptService = Depends(lambda: receipt_service),
-):
-    receipt_service.delete_receipt(receipt_id, receipt_repo)
-
-    return {"message": f"Receipt with ID '{receipt_id}' deleted successfully!"}
+receipt_router = ReceiptRouter()
+app.include_router(receipt_router)

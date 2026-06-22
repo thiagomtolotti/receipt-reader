@@ -12,7 +12,7 @@ http:
       - name: file
         type: file
         value:
-          - /home/thiago/Documents/receipt-reader/backend/samples/receipt_sample.jpg
+          - \\wsl.localhost\Ubuntu\home\thiagotolotti\projects\receipt-app\backend\samples\receipt_sample.jpg
   auth: inherit
 
 settings:

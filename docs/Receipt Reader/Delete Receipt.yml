@@ -8,7 +8,7 @@ http:
   url: "{{api_url}}/receipt/:id"
   params:
     - name: id
-      value: 271ea044-c415-4f93-86e3-17fd401b4b50
+      value: 694eb886-215a-48b6-9e11-e1b6b8912d67
       type: path
   auth: inherit
 
