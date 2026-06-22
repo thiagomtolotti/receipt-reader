@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from scripts.migrate import migrate
 
 from src.application.main import ReceiptService
@@ -7,6 +8,14 @@ from src.infra.ai_repository.gemini import GeminiAIRepository
 from src.infra.receipt_repository.sqlite import SQLiteReceiptRepository
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY is not set in the environment variables.")
