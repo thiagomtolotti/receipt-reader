@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, UploadFile
 
 from src.application.main import ReceiptService
 from src.dependencies import ai_repo, receipt_repo, receipt_service
+from src.domain.receipt import Receipt, ReceiptDTO
 from src.infra.ai_repository.types import AIRepository
 from src.infra.receipt_repository.types import ReceiptRepository
 
@@ -14,6 +15,12 @@ class ReceiptRouter(APIRouter):
 
         self.add_api_route(
             "/",
+            self.create_,
+            methods=["POST"],
+        )
+
+        self.add_api_route(
+            "/upload",
             self.upload_,
             methods=["POST"],
         )
@@ -36,12 +43,22 @@ class ReceiptRouter(APIRouter):
         service: ReceiptService = Depends(lambda: receipt_service),
         ai_repo: AIRepository = Depends(lambda: ai_repo),
         receipt_repo: ReceiptRepository = Depends(lambda: receipt_repo),
-    ):
+    ) -> ReceiptDTO:
         file_bytes = file.file.read()
 
-        service.upload(file_bytes, ai_repo, receipt_repo)
+        receipt = service.upload(file_bytes, ai_repo, receipt_repo)
 
-        return {"message": f"File '{file.filename}' uploaded successfully!"}
+        return Receipt.to_dto(receipt)
+
+    def create_(
+        self,
+        data: ReceiptDTO,
+        service: ReceiptService = Depends(lambda: receipt_service),
+        receipt_repo: ReceiptRepository = Depends(lambda: receipt_repo),
+    ):
+        service.create_receipt(data, receipt_repo)
+
+        return {"message": "Receipt created successfully!"}
 
     def list_(
         self,

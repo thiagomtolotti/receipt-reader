@@ -33,6 +33,14 @@ class ReceiptItem:
             quantity=dto.quantity,
         )
 
+    @classmethod
+    def to_dto(cls, item: "ReceiptItem") -> ReceiptItemDTO:
+        return ReceiptItemDTO(
+            name=item.name,
+            price=item.price,
+            quantity=item.quantity,
+        )
+
 
 @dataclass(frozen=True)
 class Receipt:
@@ -42,13 +50,22 @@ class Receipt:
     total: int
     id: UUID = field(default_factory=uuid4)
 
-    @staticmethod
-    def from_dto(dto: ReceiptDTO) -> "Receipt":
+    @classmethod
+    def from_dto(cls, dto: ReceiptDTO) -> "Receipt":
         items = [ReceiptItem.from_dto(item) for item in dto.items]
 
-        return Receipt(
+        return cls(
             date=datetime.fromisoformat(dto.date),
             store_name=dto.store_name,
             items=items,
             total=dto.total,
+        )
+
+    @classmethod
+    def to_dto(cls, receipt: "Receipt") -> ReceiptDTO:
+        return ReceiptDTO(
+            date=receipt.date.isoformat(),
+            store_name=receipt.store_name,
+            items=[ReceiptItem.to_dto(item) for item in receipt.items],
+            total=receipt.total,
         )
