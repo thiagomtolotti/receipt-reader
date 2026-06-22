@@ -12,8 +12,13 @@ import {
 
 import { useState } from 'react'
 import useUploadReceiptImage from './hooks/useUploadReceiptImage'
+import ReceiptModal from './receipt_modal'
+import type { Receipt } from './hooks/useListReceipts'
 
 export default function AddReceiptModal() {
+  const [step, setStep] = useState<'form' | 'confirmation'>('form')
+  const [receipt, setReceipt] = useState<Receipt | null>(null)
+
   return (
     <Dialog>
       <DialogTrigger className="ml-auto">
@@ -28,13 +33,27 @@ export default function AddReceiptModal() {
           </DialogDescription>
         </DialogHeader>
 
-        <AddReceiptModal.Form />
+        {step === 'form' && (
+          <AddReceiptModal.Form
+            onSuccess={(r) => {
+              setReceipt(r)
+              setStep('confirmation')
+            }}
+          />
+        )}
+        {step === 'confirmation' && (
+          <AddReceiptModal.ConfirmationStep receipt={receipt!} />
+        )}
       </DialogContent>
     </Dialog>
   )
 }
 
-AddReceiptModal.Form = () => {
+interface FormProps {
+  onSuccess: (receipt: Receipt) => void
+}
+
+AddReceiptModal.Form = ({ onSuccess }: FormProps) => {
   const { mutateAsync } = useUploadReceiptImage()
   const [file, setFile] = useState<File | null>(null)
 
@@ -43,7 +62,9 @@ AddReceiptModal.Form = () => {
 
     if (!file) throw new Error('No file selected')
 
-    await mutateAsync(file)
+    const receipt = await mutateAsync(file)
+
+    onSuccess(receipt)
   }
 
   return (
@@ -63,4 +84,12 @@ AddReceiptModal.Form = () => {
       </div>
     </form>
   )
+}
+
+interface ConfirmationStepProps {
+  receipt: Receipt
+}
+
+AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
+  return <ReceiptModal.Content receipt={receipt} />
 }
