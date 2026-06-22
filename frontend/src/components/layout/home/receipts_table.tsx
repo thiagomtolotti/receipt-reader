@@ -66,7 +66,7 @@ ReceiptsTable.Actions = ({ receipt }: ReceiptsTableActionsProps) => {
     <div className="flex gap-2">
       <ReceiptModal receipt={receipt} />
 
-      <DeleteReceiptModal />
+      <DeleteReceiptModal id={receipt.id} />
     </div>
   )
 }

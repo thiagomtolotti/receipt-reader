@@ -16,12 +16,18 @@ import {
 import { Button } from '#/components/ui/button'
 import { Trash } from 'lucide-react'
 
-export default function DeleteReceiptModal() {
+import useDeleteReceipt from './hooks/useDeleteReceipt'
+
+interface DeleteReceiptModalProps {
+  id: string
+}
+
+export default function DeleteReceiptModal({ id }: DeleteReceiptModalProps) {
   return (
     <Dialog>
       <DeleteReceiptModal.Trigger />
 
-      <DeleteReceiptModal.Content />
+      <DeleteReceiptModal.Content id={id} />
     </Dialog>
   )
 }
@@ -41,7 +47,9 @@ DeleteReceiptModal.Trigger = () => {
   )
 }
 
-DeleteReceiptModal.Content = () => {
+DeleteReceiptModal.Content = ({ id }: DeleteReceiptModalProps) => {
+  const { mutateAsync } = useDeleteReceipt()
+
   return (
     <DialogContent className="p-8">
       <DialogHeader>
@@ -58,7 +66,10 @@ DeleteReceiptModal.Content = () => {
         <DialogClose>
           <Button variant="ghost">Cancel</Button>
         </DialogClose>
-        <Button variant="destructive">Delete</Button>
+
+        <Button variant="destructive" onClick={() => mutateAsync(id)}>
+          Delete
+        </Button>
       </div>
     </DialogContent>
   )
