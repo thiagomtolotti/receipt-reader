@@ -1,5 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 
+export interface Receipt {
+  id: string
+  date: Date
+  store_name: string
+  total: string
+}
+
 export default function useListReceipts() {
   return useQuery({
     queryKey: ['receipts'],
@@ -7,7 +14,7 @@ export default function useListReceipts() {
     select: (data) =>
       data.receipts.map((receipt) => ({
         ...receipt,
-        date: new Date(receipt.date).toLocaleDateString('pt-BR'),
+        date: new Date(receipt.date),
         total: (receipt.total / 100).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
