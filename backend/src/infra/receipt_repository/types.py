@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 
 from src.domain.receipt import Receipt
 
@@ -10,4 +11,8 @@ class ReceiptRepository(ABC):
 
     @abstractmethod
     def list_(self) -> list[Receipt]:
+        pass
+
+    @abstractmethod
+    def delete(self, receipt_id: UUID):
         pass

@@ -4,6 +4,7 @@ from pathlib import Path
 from uuid import UUID
 
 from src.domain.receipt import Receipt, ReceiptItem
+from src.exceptions import ResourceNotFoundError
 
 from .types import ReceiptRepository
 
@@ -103,3 +104,23 @@ class SQLiteReceiptRepository(ReceiptRepository):
             )
             for row in rows
         ]
+
+    def delete(self, receipt_id: UUID):
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "DELETE FROM T001_RECEIPTS WHERE id = ?",
+                (str(receipt_id),),
+            )
+            cursor.execute(
+                "DELETE FROM T002_RECEIPT_ITEMS WHERE receipt_id = ?",
+                (str(receipt_id),),
+            )
+            conn.commit()
+
+        rows_deleted = cursor.rowcount  # type: ignore
+
+        if rows_deleted == 0:
+            raise ResourceNotFoundError(
+                f"Receipt with ID '{receipt_id}' not found.",
+            )

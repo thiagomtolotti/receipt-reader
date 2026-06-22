@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import Depends, FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from scripts.migrate import migrate
@@ -49,3 +51,13 @@ def get_receipts(receipt_service: ReceiptService = Depends(lambda: receipt_servi
     receipts = receipt_service.list_receipts(receipt_repo)
 
     return {"receipts": receipts}
+
+
+@app.delete("/receipt/{receipt_id}")
+def delete_receipt(
+    receipt_id: UUID,
+    receipt_service: ReceiptService = Depends(lambda: receipt_service),
+):
+    receipt_service.delete_receipt(receipt_id, receipt_repo)
+
+    return {"message": f"Receipt with ID '{receipt_id}' deleted successfully!"}

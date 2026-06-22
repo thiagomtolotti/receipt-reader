@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from src.domain.receipt import Receipt
 from src.infra.ai_repository.types import AIRepository
 from src.infra.receipt_repository.types import ReceiptRepository
@@ -21,3 +23,6 @@ class ReceiptService:
 
     def list_receipts(self, receipt_repo: ReceiptRepository) -> list[Receipt]:
         return receipt_repo.list_()
+
+    def delete_receipt(self, receipt_id: UUID, receipt_repo: ReceiptRepository):
+        receipt_repo.delete(receipt_id)
