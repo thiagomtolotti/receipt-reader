@@ -63,7 +63,7 @@ class SQLiteReceiptRepository(ReceiptRepository):
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT id, date, store_name, total FROM T001_RECEIPTS",
+                "SELECT id, date, store_name, total FROM T001_RECEIPTS ORDER BY date DESC",
             )
             rows = cursor.fetchall()  # type: ignore
 
