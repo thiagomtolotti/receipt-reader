@@ -1,6 +1,7 @@
 import { Button } from '#/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -86,7 +87,10 @@ ReceiptModal.Content = ({ receipt }: ReceiptModalProps) => {
         </Field>
 
         <div className="flex gap-4 ml-auto mt-8">
-          <Button variant="outline">Cancel</Button>
+          <DialogClose>
+            <Button variant="ghost">Cancel</Button>
+          </DialogClose>
+
           <Button>Submit</Button>
         </div>
       </form>

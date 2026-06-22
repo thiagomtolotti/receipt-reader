@@ -16,6 +16,7 @@ import useListReceipts from './hooks/useListReceipts'
 import type { Receipt } from './hooks/useListReceipts'
 import { Trash } from 'lucide-react'
 import ReceiptModal from './receipt_modal'
+import DeleteReceiptModal from './delete_receipt_modal'
 
 export default function ReceiptsTable() {
   const { data } = useListReceipts()
@@ -45,7 +46,7 @@ interface ReceiptsTableRowProps {
 
 ReceiptsTable.Row = ({ receipt }: ReceiptsTableRowProps) => {
   return (
-    <TableRow key={receipt.id} className="cursor-pointer">
+    <TableRow key={receipt.id}>
       <TableCell>{receipt.date.toLocaleDateString('pt-BR')}</TableCell>
       <TableCell>{receipt.store_name}</TableCell>
       <TableCell>{receipt.total}</TableCell>
@@ -65,20 +66,7 @@ ReceiptsTable.Actions = ({ receipt }: ReceiptsTableActionsProps) => {
     <div className="flex gap-2">
       <ReceiptModal receipt={receipt} />
 
-      <ReceiptsTable.DeleteButton />
+      <DeleteReceiptModal />
     </div>
-  )
-}
-
-ReceiptsTable.DeleteButton = () => {
-  return (
-    <Tooltip>
-      <TooltipTrigger>
-        <Button size="icon" variant="destructive">
-          <Trash />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>Delete receipt</TooltipContent>
-    </Tooltip>
   )
 }
