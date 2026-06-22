@@ -56,7 +56,7 @@ ReceiptModal.Trigger = () => {
 
 ReceiptModal.Content = ({ receipt }: ReceiptModalProps) => {
   return (
-    <DialogContent className="p-8 max-w-lg!">
+    <DialogContent className="max-w-lg!">
       <DialogHeader className="mb-4">
         <DialogTitle>
           <h2 className="font-bold text-xl">Receipt</h2>
