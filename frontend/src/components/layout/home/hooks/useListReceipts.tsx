@@ -16,6 +16,13 @@ export interface ReceiptItem {
   quantity: number
 }
 
+export interface CreateReceiptDTO {
+  date: string
+  store_name: string
+  total: number
+  items: ReceiptItemDTO[]
+}
+
 export default function useListReceipts(): UseQueryResult<Receipt[], Error> {
   return useQuery({
     queryKey: ['receipts'],

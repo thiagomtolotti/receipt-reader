@@ -12,9 +12,10 @@ import {
   TooltipTrigger,
 } from '#/components/ui/tooltip'
 import { Pen } from 'lucide-react'
-import type { Receipt } from './hooks/useListReceipts'
+import type { CreateReceiptDTO, Receipt } from './hooks/useListReceipts'
 import ReceiptForm from './receipt_form'
 import { forwardRef } from 'react'
+import useSaveReceipt from './hooks/useSaveReceipt'
 
 type ReceiptModalBaseProps = {
   receipt: Receipt
@@ -76,6 +77,23 @@ interface ReceiptModalContentProps {
 }
 
 ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
+  const { mutateAsync } = useSaveReceipt(receipt.id)
+
+  async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
+    ev.preventDefault()
+
+    const formData = new FormData(ev.currentTarget)
+
+    const data: CreateReceiptDTO = {
+      date: formData.get('date') as string,
+      store_name: formData.get('store_name') as string,
+      total: parseFloat(formData.get('total') as string),
+      items: [],
+    }
+
+    await mutateAsync(data)
+  }
+
   return (
     <DialogContent className="max-w-lg!">
       <DialogHeader className="mb-4">
@@ -84,7 +102,11 @@ ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
         </DialogTitle>
       </DialogHeader>
 
-      <ReceiptForm receipt={receipt} isEnabled={isEnabled} />
+      <ReceiptForm
+        receipt={receipt}
+        isEnabled={isEnabled}
+        onSubmit={handleSubmit}
+      />
     </DialogContent>
   )
 }

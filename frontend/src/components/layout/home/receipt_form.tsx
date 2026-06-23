@@ -30,7 +30,11 @@ export default function ReceiptForm({
       <div className="flex gap-2">
         <Field className="w-full">
           <FieldLabel>Store name</FieldLabel>
-          <Input defaultValue={receipt.store_name} disabled={!isEnabled} />
+          <Input
+            defaultValue={receipt.store_name}
+            disabled={!isEnabled}
+            name="store_name"
+          />
         </Field>
 
         <Field className="w-1/2">
@@ -39,6 +43,7 @@ export default function ReceiptForm({
             type="date"
             defaultValue={receipt.date.toISOString().split('T')[0]}
             disabled={!isEnabled}
+            name="date"
           />
         </Field>
       </div>
@@ -51,6 +56,7 @@ export default function ReceiptForm({
           defaultValue={receipt.total}
           className="text-right"
           disabled={!isEnabled}
+          name="total"
         />
       </Field>
 
