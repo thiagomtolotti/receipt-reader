@@ -94,15 +94,24 @@ ReceiptForm.ItemsList = ({
         {items.map((item, index) => (
           <TableRow key={index}>
             <TableCell>
-              <Input defaultValue={item.name} disabled={!isEnabled} />
+              <Input
+                defaultValue={item.name}
+                name={`items[${index}].name`}
+                disabled={!isEnabled}
+              />
             </TableCell>
             <TableCell className="w-32">
-              <Input defaultValue={item.price} disabled={!isEnabled} />
+              <Input
+                defaultValue={item.price}
+                name={`items[${index}].price`}
+                disabled={!isEnabled}
+              />
             </TableCell>
             <TableCell className="w-0">
               <Input
                 type="number"
                 defaultValue={item.quantity}
+                name={`items[${index}].quantity`}
                 disabled={!isEnabled}
               />
             </TableCell>

@@ -31,13 +31,14 @@ export default function AddReceiptModal() {
           <DialogTitle>
             <h2 className="font-bold text-xl">Add Receipt</h2>
           </DialogTitle>
+
           <DialogDescription>
             Upload your receipt image and we will process it for you.
           </DialogDescription>
         </DialogHeader>
 
         {step === 'form' && (
-          <AddReceiptModal.Form
+          <AddReceiptModal.UploadImageStep
             onSuccess={(r) => {
               setReceipt(r)
               setStep('confirmation')
@@ -52,11 +53,11 @@ export default function AddReceiptModal() {
   )
 }
 
-interface FormProps {
+interface UploadImageStepProps {
   onSuccess: (receipt: Receipt) => void
 }
 
-AddReceiptModal.Form = ({ onSuccess }: FormProps) => {
+AddReceiptModal.UploadImageStep = ({ onSuccess }: UploadImageStepProps) => {
   const { mutateAsync } = useUploadReceiptImage()
   const [file, setFile] = useState<File | null>(null)
 
