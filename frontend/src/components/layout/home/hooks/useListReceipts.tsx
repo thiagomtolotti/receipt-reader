@@ -10,16 +10,10 @@ export default function useListReceipts(): UseQueryResult<Receipt[], Error> {
       data.receipts.map((receipt) => ({
         ...receipt,
         date: new Date(receipt.date),
-        total: (receipt.total / 100).toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }),
+        total: receipt.total,
         items: receipt.items.map((item) => ({
           ...item,
-          price: (item.price / 100).toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          }),
+          price: item.price,
         })),
       })),
   })

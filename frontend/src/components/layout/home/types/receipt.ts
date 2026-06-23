@@ -2,14 +2,14 @@ export interface Receipt {
   id: string
   date: Date
   store_name: string
-  total: string
+  total: number
   items: ReceiptItem[]
 }
 
 export interface ReceiptItem {
   id: string
   name: string
-  price: string
+  price: number
   quantity: number
 }
 
@@ -18,6 +18,12 @@ export interface CreateReceiptDTO {
   store_name: string
   total: number
   items: ReceiptItemDTO[]
+}
+
+export interface CreateReceiptItemDTO {
+  name: string
+  price: number
+  quantity: number
 }
 
 export interface ReceiptDTO {

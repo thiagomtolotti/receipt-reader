@@ -10,17 +10,11 @@ export default function useUploadReceiptImage() {
         id: receipt.id,
         store_name: receipt.store_name,
         date: new Date(receipt.date),
-        total: (receipt.total / 100).toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }),
+        total: receipt.total,
         items: receipt.items.map((item) => ({
           id: item.id,
           name: item.name,
-          price: (item.price / 100).toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          }),
+          price: item.price,
           quantity: item.quantity,
         })),
       }
