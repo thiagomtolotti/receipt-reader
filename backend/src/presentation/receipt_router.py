@@ -14,15 +14,21 @@ class ReceiptRouter(APIRouter):
         super().__init__(prefix="/receipt", tags=["Receipt"])
 
         self.add_api_route(
+            "/upload",
+            self.upload_image,
+            methods=["POST"],
+        )
+
+        self.add_api_route(
             "/",
             self.create_,
             methods=["POST"],
         )
 
         self.add_api_route(
-            "/upload",
-            self.upload_,
-            methods=["POST"],
+            "/{id}",
+            self.update_,
+            methods=["PUT"],
         )
 
         self.add_api_route(
@@ -37,7 +43,7 @@ class ReceiptRouter(APIRouter):
             methods=["DELETE"],
         )
 
-    def upload_(
+    def upload_image(
         self,
         file: UploadFile,
         service: ReceiptService = Depends(lambda: receipt_service),
@@ -46,7 +52,7 @@ class ReceiptRouter(APIRouter):
     ) -> ReceiptDTO:
         file_bytes = file.file.read()
 
-        receipt = service.upload(file_bytes, ai_repo, receipt_repo)
+        receipt = service.upload(file_bytes, ai_repo)
 
         return Receipt.to_dto(receipt)
 
@@ -59,6 +65,17 @@ class ReceiptRouter(APIRouter):
         service.create_receipt(data, receipt_repo)
 
         return {"message": "Receipt created successfully!"}
+
+    def update_(
+        self,
+        id: UUID,
+        data: ReceiptDTO,
+        service: ReceiptService = Depends(lambda: receipt_service),
+        receipt_repo: ReceiptRepository = Depends(lambda: receipt_repo),
+    ):
+        service.update_receipt(id, data, receipt_repo)
+
+        return {"message": "Receipt updated successfully!"}
 
     def list_(
         self,

@@ -16,3 +16,7 @@ class ReceiptRepository(ABC):
     @abstractmethod
     def delete(self, receipt_id: UUID):
         pass
+
+    @abstractmethod
+    def update(self, receipt: Receipt):
+        pass

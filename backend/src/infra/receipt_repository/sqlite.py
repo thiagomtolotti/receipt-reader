@@ -124,3 +124,41 @@ class SQLiteReceiptRepository(ReceiptRepository):
             raise ResourceNotFoundError(
                 f"Receipt with ID '{receipt_id}' not found.",
             )
+
+    def update(self, receipt: Receipt):
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                    UPDATE T001_RECEIPTS 
+                    SET date = ?, store_name = ?, total = ? 
+                    WHERE id = ?
+                """,
+                (
+                    receipt.date.isoformat(),
+                    receipt.store_name,
+                    receipt.total,
+                    str(receipt.id),
+                ),
+            )
+            conn.commit()
+
+        rows_updated = cursor.rowcount  # type: ignore
+
+        if rows_updated == 0:
+            raise ResourceNotFoundError(
+                f"Receipt with ID '{receipt.id}' not found.",
+            )
+
+        # Delete existing items for the receipt
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "DELETE FROM T002_RECEIPT_ITEMS WHERE receipt_id = ?",
+                (str(receipt.id),),
+            )
+            conn.commit()
+
+        # Save new items for the receipt
+        for item in receipt.items:
+            self._save_item(receipt.id, item)

@@ -51,7 +51,7 @@ class Receipt:
     id: UUID = field(default_factory=uuid4)
 
     @classmethod
-    def from_dto(cls, dto: ReceiptDTO) -> "Receipt":
+    def from_dto(cls, dto: ReceiptDTO, id: UUID | None = None) -> "Receipt":
         items = [ReceiptItem.from_dto(item) for item in dto.items]
 
         return cls(
@@ -59,6 +59,7 @@ class Receipt:
             store_name=dto.store_name,
             items=items,
             total=dto.total,
+            id=id if id is not None else uuid4(),
         )
 
     @classmethod

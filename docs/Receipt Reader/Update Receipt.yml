@@ -1,0 +1,28 @@
+info:
+  name: Update Receipt
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: "{{api_url}}/receipt/:id"
+  params:
+    - name: id
+      value: 68e1c349-d075-4a64-86b2-40c0b6fd2625
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "date": "2026-06-23T20:04:19.097Z",
+        "store_name": "Test",
+        "items": [],
+        "total": 500
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
