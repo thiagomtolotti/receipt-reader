@@ -12,8 +12,9 @@ import {
 
 import { useState } from 'react'
 import useUploadReceiptImage from './hooks/useUploadReceiptImage'
-import type { Receipt } from './hooks/useListReceipts'
+import type { CreateReceiptDTO, Receipt } from './hooks/useListReceipts'
 import ReceiptForm from './receipt_form'
+import useSaveReceipt from './hooks/useSaveReceipt'
 
 export default function AddReceiptModal() {
   const [step, setStep] = useState<'form' | 'confirmation'>('form')
@@ -93,5 +94,22 @@ interface ConfirmationStepProps {
 }
 
 AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
-  return <ReceiptForm receipt={receipt} />
+  const { mutateAsync } = useSaveReceipt()
+
+  async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
+    ev.preventDefault()
+
+    const data = new FormData(ev.currentTarget)
+
+    const receiptData: CreateReceiptDTO = {
+      date: data.get('date') as string,
+      store_name: data.get('store_name') as string,
+      total: parseFloat((data.get('total') as string).replace('R$', '').trim()),
+      items: [],
+    }
+
+    await mutateAsync(receiptData)
+  }
+
+  return <ReceiptForm receipt={receipt} onSubmit={handleSubmit} />
 }

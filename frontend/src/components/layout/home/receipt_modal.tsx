@@ -87,7 +87,9 @@ ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
     const data: CreateReceiptDTO = {
       date: formData.get('date') as string,
       store_name: formData.get('store_name') as string,
-      total: parseFloat(formData.get('total') as string),
+      total: parseFloat(
+        (formData.get('total') as string).replace('R$', '').trim(),
+      ),
       items: [],
     }
 
