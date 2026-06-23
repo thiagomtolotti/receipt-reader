@@ -21,6 +21,7 @@ import { X } from 'lucide-react'
 import type { Receipt } from './hooks/useListReceipts'
 
 import useListReceipts from './hooks/useListReceipts'
+import { useState } from 'react'
 
 export default function ReceiptsTable() {
   const { data } = useListReceipts()
@@ -51,15 +52,30 @@ interface ReceiptsTableRowProps {
 }
 
 ReceiptsTable.Row = ({ receipt }: ReceiptsTableRowProps) => {
+  const [open, setOpen] = useState(false)
+
+  const openModal = () => setOpen(true)
+
   return (
-    <TableRow key={receipt.id}>
-      <TableCell>{receipt.date.toLocaleDateString('pt-BR')}</TableCell>
-      <TableCell>{receipt.store_name}</TableCell>
-      <TableCell>{receipt.total}</TableCell>
-      <TableCell>
-        <ReceiptsTable.Actions receipt={receipt} />
-      </TableCell>
-    </TableRow>
+    <>
+      <TableRow key={receipt.id}>
+        <TableCell onClick={openModal}>
+          {receipt.date.toLocaleDateString('pt-BR')}
+        </TableCell>
+        <TableCell onClick={openModal}>{receipt.store_name}</TableCell>
+        <TableCell onClick={openModal}>{receipt.total}</TableCell>
+        <TableCell>
+          <ReceiptsTable.Actions receipt={receipt} />
+        </TableCell>
+      </TableRow>
+
+      <ReceiptModal
+        receipt={receipt}
+        open={open}
+        setOpen={setOpen}
+        isEnabled={false}
+      />
+    </>
   )
 }
 

@@ -6,15 +6,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '#/components/ui/dialog'
-import { Input } from '#/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '#/components/ui/table'
 import {
   Tooltip,
   TooltipContent,
@@ -23,37 +14,68 @@ import {
 import { Pen } from 'lucide-react'
 import type { Receipt } from './hooks/useListReceipts'
 import ReceiptForm from './receipt_form'
+import { forwardRef } from 'react'
 
-interface ReceiptModalProps {
+type ReceiptModalBaseProps = {
   receipt: Receipt
+  open?: boolean
+  setOpen?: (open: boolean) => void
+  isEnabled?: boolean
 }
 
-export default function ReceiptModal({ receipt }: ReceiptModalProps) {
-  return (
-    <Dialog>
-      <ReceiptModal.Trigger />
+interface UncontrolledReceiptModalProps {
+  open?: undefined
+  setOpen?: undefined
+}
 
-      <ReceiptModal.Content receipt={receipt} />
+interface ControlledReceiptModalProps {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+type ReceiptModalProps = ReceiptModalBaseProps &
+  (UncontrolledReceiptModalProps | ControlledReceiptModalProps)
+
+export default function ReceiptModal({
+  receipt,
+  open,
+  setOpen,
+  isEnabled = true,
+}: ReceiptModalProps) {
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      {open === undefined && <ReceiptModal.Trigger />}
+
+      <ReceiptModal.Content receipt={receipt} isEnabled={isEnabled} />
     </Dialog>
   )
 }
 
-ReceiptModal.Trigger = () => {
+ReceiptModal.Trigger = forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<'button'>
+>(({ children, ...props }, ref) => {
   return (
     <DialogTrigger>
       <Tooltip>
-        <TooltipTrigger>
-          <Button size="icon">
+        <TooltipTrigger asChild>
+          <Button size="icon" ref={ref} {...props}>
             <Pen />
+            {children}
           </Button>
         </TooltipTrigger>
         <TooltipContent>Edit receipt</TooltipContent>
       </Tooltip>
     </DialogTrigger>
   )
+})
+
+interface ReceiptModalContentProps {
+  receipt: Receipt
+  isEnabled?: boolean
 }
 
-ReceiptModal.Content = ({ receipt }: ReceiptModalProps) => {
+ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
   return (
     <DialogContent className="max-w-lg!">
       <DialogHeader className="mb-4">
@@ -62,41 +84,7 @@ ReceiptModal.Content = ({ receipt }: ReceiptModalProps) => {
         </DialogTitle>
       </DialogHeader>
 
-      <ReceiptForm receipt={receipt} />
+      <ReceiptForm receipt={receipt} isEnabled={isEnabled} />
     </DialogContent>
-  )
-}
-
-interface ReceiptModalItemsListProps {
-  items: Receipt['items']
-}
-
-ReceiptModal.ItemsList = ({ items }: ReceiptModalItemsListProps) => {
-  return (
-    <Table className="my-6">
-      <TableHeader>
-        <TableRow>
-          <TableHead>Item</TableHead>
-          <TableHead>Price</TableHead>
-          <TableHead>Quantity</TableHead>
-        </TableRow>
-      </TableHeader>
-
-      <TableBody>
-        {items.map((item, index) => (
-          <TableRow key={index}>
-            <TableCell>
-              <Input defaultValue={item.name} />
-            </TableCell>
-            <TableCell className="w-32">
-              <Input defaultValue={item.price} />
-            </TableCell>
-            <TableCell className="w-0">
-              <Input type="number" defaultValue={item.quantity} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
   )
 }
