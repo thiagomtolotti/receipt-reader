@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import type { CreateReceiptDTO } from './useListReceipts'
+
+import type { CreateReceiptDTO } from '../types/receipt'
 
 export default function useSaveReceipt(id?: string) {
   const update = useMutation({

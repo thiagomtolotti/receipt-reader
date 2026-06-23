@@ -3,7 +3,6 @@ import { DialogClose } from '#/components/ui/dialog'
 import { Field, FieldLabel } from '#/components/ui/field'
 import { Input } from '#/components/ui/input'
 import type { HTMLProps } from 'react'
-import type { Receipt, ReceiptItem } from './hooks/useListReceipts'
 import { cn } from '#/lib/utils'
 import {
   Table,
@@ -13,6 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from '#/components/ui/table'
+
+import type { Receipt, ReceiptItem } from './types/receipt'
 
 interface ReceiptFormProps extends Partial<HTMLProps<HTMLFormElement>> {
   receipt: Receipt

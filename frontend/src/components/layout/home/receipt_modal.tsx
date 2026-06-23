@@ -1,3 +1,5 @@
+import { forwardRef } from 'react'
+
 import { Button } from '#/components/ui/button'
 import {
   Dialog,
@@ -11,11 +13,14 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '#/components/ui/tooltip'
+
 import { Pen } from 'lucide-react'
-import type { CreateReceiptDTO, Receipt } from './hooks/useListReceipts'
+
 import ReceiptForm from './receipt_form'
-import { forwardRef } from 'react'
+
 import useSaveReceipt from './hooks/useSaveReceipt'
+
+import type { CreateReceiptDTO, Receipt } from './types/receipt'
 
 type ReceiptModalBaseProps = {
   receipt: Receipt

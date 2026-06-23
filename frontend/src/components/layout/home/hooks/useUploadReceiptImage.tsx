@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import type { Receipt, ReceiptDTO } from './useListReceipts'
+import type { Receipt, ReceiptDTO } from '../types/receipt'
 
 export default function useUploadReceiptImage() {
   return useMutation({

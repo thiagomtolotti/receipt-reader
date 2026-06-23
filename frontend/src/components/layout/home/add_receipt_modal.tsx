@@ -12,7 +12,7 @@ import {
 
 import { useState } from 'react'
 import useUploadReceiptImage from './hooks/useUploadReceiptImage'
-import type { CreateReceiptDTO, Receipt } from './hooks/useListReceipts'
+import type { CreateReceiptDTO, Receipt } from './types/receipt'
 import ReceiptForm from './receipt_form'
 import useSaveReceipt from './hooks/useSaveReceipt'
 

@@ -18,7 +18,7 @@ import {
 } from '#/components/ui/empty'
 import { X } from 'lucide-react'
 
-import type { Receipt } from './hooks/useListReceipts'
+import type { Receipt } from './types/receipt'
 
 import useListReceipts from './hooks/useListReceipts'
 import { useState } from 'react'
