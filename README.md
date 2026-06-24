@@ -2,7 +2,7 @@
 
 - [x] Frontend: loading button states
 - [x] Frontend: Items list rendering correctly
-- [ ] Frontend: Notifications
-- [ ] Frontend: update interface on item create/update/delete
+- [x] Frontend: update interface on item create/update/delete
+- [ ] ~~Frontend: Notifications~~
 - [ ] Add complete readme
 - [ ] LinkedIn post (video + text)
