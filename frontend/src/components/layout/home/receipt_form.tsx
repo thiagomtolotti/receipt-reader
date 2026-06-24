@@ -15,6 +15,12 @@ import {
 
 import type { Receipt, ReceiptItem } from './types/receipt'
 import MoneyInput from '#/components/ui/money_input'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '#/components/ui/empty'
 
 interface ReceiptFormProps extends Partial<HTMLProps<HTMLFormElement>> {
   receipt: Receipt
@@ -119,7 +125,26 @@ ReceiptForm.ItemsList = ({
             </TableCell>
           </TableRow>
         ))}
+
+        {items.length === 0 && <ReceiptForm.EmptyItems />}
       </TableBody>
     </Table>
+  )
+}
+
+ReceiptForm.EmptyItems = () => {
+  return (
+    <TableRow className="hover:bg-transparent!">
+      <TableCell colSpan={9999}>
+        <Empty className="py-4">
+          <EmptyHeader className="gap-1">
+            <EmptyTitle className="text-xs">No receipts found</EmptyTitle>
+            <EmptyDescription className="text-xs">
+              Try adding some receipts to see them here.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </TableCell>
+    </TableRow>
   )
 }
