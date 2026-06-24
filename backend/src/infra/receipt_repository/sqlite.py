@@ -47,14 +47,15 @@ class SQLiteReceiptRepository(ReceiptRepository):
             cursor.execute(
                 """
                     INSERT INTO T002_RECEIPT_ITEMS 
-                        (receipt_id, name, price) 
+                        (receipt_id, name, price, quantity) 
                     VALUES 
-                        (?, ?, ?)
+                        (?, ?, ?, ?)
                 """,
                 (
                     str(receipt_id),
                     item.name,
                     item.price,
+                    item.quantity,
                 ),
             )
             conn.commit()
