@@ -15,6 +15,7 @@ import useUploadReceiptImage from './hooks/useUploadReceiptImage'
 import type { CreateReceiptDTO, Receipt } from './types/receipt'
 import ReceiptForm from './receipt_form'
 import useSaveReceipt from './hooks/useSaveReceipt'
+import ImageInput from '#/components/ui/image_input'
 
 export default function AddReceiptModal() {
   const [step, setStep] = useState<'form' | 'confirmation'>('form')
@@ -73,11 +74,7 @@ AddReceiptModal.UploadImageStep = ({ onSuccess }: UploadImageStepProps) => {
 
   return (
     <form className="grid gap-4" onSubmit={handleSubmit}>
-      <Input
-        type="file"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-        accept="image/*"
-      />
+      <ImageInput file={file} onChange={(file) => setFile(file)} />
 
       <div className="mt-8 ml-auto flex gap-4">
         <DialogClose>
