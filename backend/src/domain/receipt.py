@@ -23,7 +23,6 @@ class ReceiptItem:
     name: str
     price: int
     quantity: int
-    id: UUID = field(default_factory=uuid4)
 
     @classmethod
     def from_dto(cls, dto: ReceiptItemDTO) -> "ReceiptItem":

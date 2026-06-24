@@ -47,12 +47,11 @@ class SQLiteReceiptRepository(ReceiptRepository):
             cursor.execute(
                 """
                     INSERT INTO T002_RECEIPT_ITEMS 
-                        (id, receipt_id, name, price) 
+                        (receipt_id, name, price) 
                     VALUES 
-                        (?, ?, ?, ?)
+                        (?, ?, ?)
                 """,
                 (
-                    str(item.id),
                     str(receipt_id),
                     item.name,
                     item.price,
@@ -90,17 +89,16 @@ class SQLiteReceiptRepository(ReceiptRepository):
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT id, name, price FROM T002_RECEIPT_ITEMS WHERE receipt_id = ?",
+                "SELECT name, price, quantity FROM T002_RECEIPT_ITEMS WHERE receipt_id = ?",
                 (str(receipt_id),),
             )
             rows = cursor.fetchall()  # type: ignore
 
         return [
             ReceiptItem(
-                id=UUID(row[0]),
-                name=row[1],
-                price=row[2],
-                quantity=1,
+                name=row[0],
+                price=row[1],
+                quantity=row[2],
             )
             for row in rows
         ]

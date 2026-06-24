@@ -7,7 +7,6 @@ export interface Receipt {
 }
 
 export interface ReceiptItem {
-  id: string
   name: string
   price: number
   quantity: number
@@ -17,7 +16,7 @@ export interface CreateReceiptDTO {
   date: string
   store_name: string
   total: number
-  items: ReceiptItemDTO[]
+  items: CreateReceiptItemDTO[]
 }
 
 export interface CreateReceiptItemDTO {
@@ -35,7 +34,6 @@ export interface ReceiptDTO {
 }
 
 export interface ReceiptItemDTO {
-  id: string
   name: string
   price: number
   quantity: number

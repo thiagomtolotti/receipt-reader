@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '#/components/ui/table'
 
-import type { HTMLProps } from 'react'
+import { useState, type HTMLProps } from 'react'
 import type { Receipt, ReceiptItem } from './types/receipt'
 
 import MoneyInput from '#/components/ui/money_input'
@@ -85,9 +85,15 @@ interface ReceiptModalItemsListProps {
 }
 
 ReceiptForm.ItemsList = ({
-  items,
+  items: _items,
   isEnabled = true,
 }: ReceiptModalItemsListProps) => {
+  const [items, setItems] = useState<ReceiptItem[]>(_items)
+
+  const handleDeleteItem = (name: string) => {
+    setItems((prevItems) => prevItems.filter((item) => item.name !== name))
+  }
+
   return (
     <Table className="my-6">
       <TableHeader>
@@ -102,9 +108,10 @@ ReceiptForm.ItemsList = ({
       <TableBody>
         {items.map((item) => (
           <ReceiptForm.ItemRow
-            key={item.id}
+            key={item.name}
             item={item}
             isEnabled={isEnabled}
+            onDelete={handleDeleteItem}
           />
         ))}
 
@@ -136,15 +143,20 @@ ReceiptForm.EmptyItems = () => {
 interface ReceiptFormItemRowProps {
   item: ReceiptItem
   isEnabled?: boolean
+  onDelete: (itemId: string) => void
 }
 
-ReceiptForm.ItemRow = ({ item, isEnabled = true }: ReceiptFormItemRowProps) => {
+ReceiptForm.ItemRow = ({
+  item,
+  onDelete,
+  isEnabled = true,
+}: ReceiptFormItemRowProps) => {
   return (
-    <TableRow key={item.id}>
+    <TableRow>
       <TableCell>
         <Input
           defaultValue={item.name}
-          name={`items[${item.id}].name`}
+          name={`items[${item.name}].name`}
           disabled={!isEnabled}
         />
       </TableCell>
@@ -152,7 +164,7 @@ ReceiptForm.ItemRow = ({ item, isEnabled = true }: ReceiptFormItemRowProps) => {
       <TableCell className="w-32">
         <MoneyInput
           defaultValue={item.price}
-          name={`items[${item.id}].price`}
+          name={`items[${item.name}].price`}
           disabled={!isEnabled}
           showLabel={false}
           className="w-auto"
@@ -163,13 +175,19 @@ ReceiptForm.ItemRow = ({ item, isEnabled = true }: ReceiptFormItemRowProps) => {
         <Input
           type="number"
           defaultValue={item.quantity}
-          name={`items[${item.id}].quantity`}
+          name={`items[${item.name}].quantity`}
           disabled={!isEnabled}
         />
       </TableCell>
 
       <TableCell className="0">
-        <Button size="icon" variant="ghost" type="button" disabled={!isEnabled}>
+        <Button
+          size="icon"
+          variant="ghost"
+          type="button"
+          disabled={!isEnabled}
+          onClick={() => onDelete?.(item.name)}
+        >
           <Trash2 />
         </Button>
       </TableCell>
