@@ -14,6 +14,7 @@ import {
 } from '#/components/ui/table'
 
 import type { Receipt, ReceiptItem } from './types/receipt'
+import MoneyInput from '#/components/ui/money_input'
 
 interface ReceiptFormProps extends Partial<HTMLProps<HTMLFormElement>> {
   receipt: Receipt
@@ -51,15 +52,7 @@ export default function ReceiptForm({
 
       <ReceiptForm.ItemsList items={receipt.items} isEnabled={isEnabled} />
 
-      <Field className="w-40 ml-auto">
-        <FieldLabel className="ml-auto!">Total</FieldLabel>
-        <Input
-          defaultValue={receipt.total}
-          className="text-right"
-          disabled={!isEnabled}
-          name="total"
-        />
-      </Field>
+      <MoneyInput defaultValue={receipt.total} isEnabled={isEnabled} />
 
       <div className="flex gap-4 ml-auto mt-8">
         <DialogClose>

@@ -22,6 +22,7 @@ import type { Receipt } from './types/receipt'
 
 import useListReceipts from './hooks/useListReceipts'
 import { useState } from 'react'
+import toCurrency from '#/lib/toCurrency'
 
 export default function ReceiptsTable() {
   const { data } = useListReceipts()
@@ -63,7 +64,7 @@ ReceiptsTable.Row = ({ receipt }: ReceiptsTableRowProps) => {
           {receipt.date.toLocaleDateString('pt-BR')}
         </TableCell>
         <TableCell onClick={openModal}>{receipt.store_name}</TableCell>
-        <TableCell onClick={openModal}>{receipt.total}</TableCell>
+        <TableCell onClick={openModal}>{toCurrency(receipt.total)}</TableCell>
         <TableCell>
           <ReceiptsTable.Actions receipt={receipt} />
         </TableCell>
