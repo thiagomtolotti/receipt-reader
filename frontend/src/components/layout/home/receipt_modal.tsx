@@ -82,7 +82,7 @@ interface ReceiptModalContentProps {
 }
 
 ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
-  const { mutateAsync } = useSaveReceipt(receipt.id)
+  const { mutateAsync, isPending } = useSaveReceipt(receipt.id)
 
   async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault()
@@ -112,6 +112,7 @@ ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
       <ReceiptForm
         receipt={receipt}
         isEnabled={isEnabled}
+        isPending={isPending}
         onSubmit={handleSubmit}
       />
     </DialogContent>

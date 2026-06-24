@@ -19,12 +19,14 @@ import MoneyInput from '#/components/ui/money_input'
 interface ReceiptFormProps extends Partial<HTMLProps<HTMLFormElement>> {
   receipt: Receipt
   isEnabled?: boolean
+  isPending?: boolean
 }
 
 export default function ReceiptForm({
   receipt,
   className,
   isEnabled = true,
+  isPending = false,
   ...props
 }: ReceiptFormProps) {
   return (
@@ -63,7 +65,7 @@ export default function ReceiptForm({
           <Button variant="ghost">Cancel</Button>
         </DialogClose>
 
-        {isEnabled && <Button>Submit</Button>}
+        {isEnabled && <Button loading={isPending}>Submit</Button>}
       </div>
     </form>
   )

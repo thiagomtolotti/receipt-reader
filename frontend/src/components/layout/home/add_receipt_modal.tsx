@@ -59,7 +59,7 @@ interface UploadImageStepProps {
 }
 
 AddReceiptModal.UploadImageStep = ({ onSuccess }: UploadImageStepProps) => {
-  const { mutateAsync } = useUploadReceiptImage()
+  const { mutateAsync, isPending } = useUploadReceiptImage()
   const [file, setFile] = useState<File | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
@@ -81,7 +81,9 @@ AddReceiptModal.UploadImageStep = ({ onSuccess }: UploadImageStepProps) => {
           <Button variant="ghost">Cancel</Button>
         </DialogClose>
 
-        <Button disabled={!file}>Continue</Button>
+        <Button disabled={!file} loading={isPending}>
+          Continue
+        </Button>
       </div>
     </form>
   )
@@ -92,7 +94,7 @@ interface ConfirmationStepProps {
 }
 
 AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
-  const { mutateAsync } = useSaveReceipt()
+  const { mutateAsync, isPending } = useSaveReceipt()
 
   async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault()
@@ -109,5 +111,11 @@ AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
     await mutateAsync(receiptData)
   }
 
-  return <ReceiptForm receipt={receipt} onSubmit={handleSubmit} />
+  return (
+    <ReceiptForm
+      receipt={receipt}
+      onSubmit={handleSubmit}
+      isPending={isPending}
+    />
+  )
 }

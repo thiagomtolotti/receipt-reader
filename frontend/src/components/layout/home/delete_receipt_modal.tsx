@@ -48,7 +48,7 @@ DeleteReceiptModal.Trigger = () => {
 }
 
 DeleteReceiptModal.Content = ({ id }: DeleteReceiptModalProps) => {
-  const { mutateAsync } = useDeleteReceipt()
+  const { mutateAsync, isPending } = useDeleteReceipt()
 
   return (
     <DialogContent className="p-8">
@@ -67,7 +67,11 @@ DeleteReceiptModal.Content = ({ id }: DeleteReceiptModalProps) => {
           <Button variant="ghost">Cancel</Button>
         </DialogClose>
 
-        <Button variant="destructive" onClick={() => mutateAsync(id)}>
+        <Button
+          variant="destructive"
+          loading={isPending}
+          onClick={() => mutateAsync(id)}
+        >
           Delete
         </Button>
       </div>
