@@ -2,7 +2,6 @@ import { Button } from '#/components/ui/button'
 import { DialogClose } from '#/components/ui/dialog'
 import { Field, FieldLabel } from '#/components/ui/field'
 import { Input } from '#/components/ui/input'
-import type { HTMLProps } from 'react'
 import { cn } from '#/lib/utils'
 import {
   Table,
@@ -13,7 +12,9 @@ import {
   TableRow,
 } from '#/components/ui/table'
 
+import type { HTMLProps } from 'react'
 import type { Receipt, ReceiptItem } from './types/receipt'
+
 import MoneyInput from '#/components/ui/money_input'
 import {
   Empty,
@@ -21,6 +22,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '#/components/ui/empty'
+import { Plus, Trash2 } from 'lucide-react'
 
 interface ReceiptFormProps extends Partial<HTMLProps<HTMLFormElement>> {
   receipt: Receipt
@@ -93,40 +95,22 @@ ReceiptForm.ItemsList = ({
           <TableHead>Item</TableHead>
           <TableHead>Price</TableHead>
           <TableHead>Quantity</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
-        {items.map((item, index) => (
-          <TableRow key={index}>
-            <TableCell>
-              <Input
-                defaultValue={item.name}
-                name={`items[${index}].name`}
-                disabled={!isEnabled}
-              />
-            </TableCell>
-            <TableCell className="w-32">
-              <MoneyInput
-                defaultValue={item.price}
-                name={`items[${index}].price`}
-                disabled={!isEnabled}
-                showLabel={false}
-                className="w-auto"
-              />
-            </TableCell>
-            <TableCell className="w-0">
-              <Input
-                type="number"
-                defaultValue={item.quantity}
-                name={`items[${index}].quantity`}
-                disabled={!isEnabled}
-              />
-            </TableCell>
-          </TableRow>
+        {items.map((item) => (
+          <ReceiptForm.ItemRow
+            key={item.id}
+            item={item}
+            isEnabled={isEnabled}
+          />
         ))}
 
         {items.length === 0 && <ReceiptForm.EmptyItems />}
+
+        {isEnabled && <ReceiptForm.AddItemButton />}
       </TableBody>
     </Table>
   )
@@ -144,6 +128,63 @@ ReceiptForm.EmptyItems = () => {
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+interface ReceiptFormItemRowProps {
+  item: ReceiptItem
+  isEnabled?: boolean
+}
+
+ReceiptForm.ItemRow = ({ item, isEnabled = true }: ReceiptFormItemRowProps) => {
+  return (
+    <TableRow key={item.id}>
+      <TableCell>
+        <Input
+          defaultValue={item.name}
+          name={`items[${item.id}].name`}
+          disabled={!isEnabled}
+        />
+      </TableCell>
+
+      <TableCell className="w-32">
+        <MoneyInput
+          defaultValue={item.price}
+          name={`items[${item.id}].price`}
+          disabled={!isEnabled}
+          showLabel={false}
+          className="w-auto"
+        />
+      </TableCell>
+
+      <TableCell className="w-0">
+        <Input
+          type="number"
+          defaultValue={item.quantity}
+          name={`items[${item.id}].quantity`}
+          disabled={!isEnabled}
+        />
+      </TableCell>
+
+      <TableCell className="0">
+        <Button size="icon" variant="ghost" type="button" disabled={!isEnabled}>
+          <Trash2 />
+        </Button>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+ReceiptForm.AddItemButton = () => {
+  return (
+    <TableRow className="border-t-none hover:bg-transparent!">
+      <TableCell colSpan={9999}>
+        <Button type="button" variant="ghost" className="w-full">
+          <Plus />
+          Add item
+        </Button>
       </TableCell>
     </TableRow>
   )
