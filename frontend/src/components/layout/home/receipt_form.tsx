@@ -93,6 +93,9 @@ ReceiptForm.ItemsList = ({
   const handleDeleteItem = (name: string) => {
     setItems((prevItems) => prevItems.filter((item) => item.name !== name))
   }
+  const handleAddItem = () => {
+    setItems((prev) => [...prev, { name: '', price: 0, quantity: 1 }])
+  }
 
   return (
     <Table className="my-6">
@@ -117,7 +120,7 @@ ReceiptForm.ItemsList = ({
 
         {items.length === 0 && <ReceiptForm.EmptyItems />}
 
-        {isEnabled && <ReceiptForm.AddItemButton />}
+        {isEnabled && <ReceiptForm.AddItemButton onClick={handleAddItem} />}
       </TableBody>
     </Table>
   )
@@ -195,11 +198,20 @@ ReceiptForm.ItemRow = ({
   )
 }
 
-ReceiptForm.AddItemButton = () => {
+interface AddItemButtonProps {
+  onClick?: () => void
+}
+
+ReceiptForm.AddItemButton = ({ onClick }: AddItemButtonProps) => {
   return (
     <TableRow className="border-t-none hover:bg-transparent!">
       <TableCell colSpan={9999}>
-        <Button type="button" variant="ghost" className="w-full">
+        <Button
+          type="button"
+          variant="ghost"
+          className="w-full"
+          onClick={onClick}
+        >
           <Plus />
           Add item
         </Button>
