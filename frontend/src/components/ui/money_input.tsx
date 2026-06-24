@@ -1,18 +1,23 @@
+import { cn } from '#/lib/utils'
 import { Field, FieldLabel } from './field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group'
 
 interface MoneyInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   defaultValue?: number
   isEnabled?: boolean
+  showLabel?: boolean
 }
 
 export default function MoneyInput({
   defaultValue,
   isEnabled = true,
+  showLabel = true,
+  className,
+  ...props
 }: MoneyInputProps) {
   return (
-    <Field className="w-40 ml-auto">
-      <FieldLabel className="ml-auto!">Total</FieldLabel>
+    <Field className={cn('w-40 ml-auto', className)}>
+      {showLabel && <FieldLabel className="ml-auto!">Total</FieldLabel>}
 
       <InputGroup>
         <InputGroupInput
@@ -24,7 +29,7 @@ export default function MoneyInput({
           className="text-right"
           disabled={!isEnabled}
           type="number"
-          name="total"
+          {...props}
         />
 
         <InputGroupAddon align="inline-start">$</InputGroupAddon>

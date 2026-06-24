@@ -52,7 +52,11 @@ export default function ReceiptForm({
 
       <ReceiptForm.ItemsList items={receipt.items} isEnabled={isEnabled} />
 
-      <MoneyInput defaultValue={receipt.total} isEnabled={isEnabled} />
+      <MoneyInput
+        name="total"
+        defaultValue={receipt.total}
+        isEnabled={isEnabled}
+      />
 
       <div className="flex gap-4 ml-auto mt-8">
         <DialogClose>
@@ -95,10 +99,12 @@ ReceiptForm.ItemsList = ({
               />
             </TableCell>
             <TableCell className="w-32">
-              <Input
+              <MoneyInput
                 defaultValue={item.price}
                 name={`items[${index}].price`}
                 disabled={!isEnabled}
+                showLabel={false}
+                className="w-auto"
               />
             </TableCell>
             <TableCell className="w-0">

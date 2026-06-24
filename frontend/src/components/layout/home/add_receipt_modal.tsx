@@ -105,7 +105,7 @@ AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
     const receiptData: CreateReceiptDTO = {
       date: data.get('date') as string,
       store_name: data.get('store_name') as string,
-      total: parseFloat((data.get('total') as string).replace('R$', '').trim()),
+      total: Math.round(parseFloat(data.get('total') as string) * 100),
       items: [],
     }
 
