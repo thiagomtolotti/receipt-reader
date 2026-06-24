@@ -47,7 +47,7 @@ class GeminiAIRepository(AIRepository):
 
     def extract_data(self, image: bytes) -> Receipt:
         response = self.client.models.generate_content(  # type: ignore
-            model="gemini-2.5-flash",
+            model="gemini-2.5-flash-lite",
             contents=[
                 types.Part.from_bytes(
                     data=image,
@@ -55,6 +55,7 @@ class GeminiAIRepository(AIRepository):
                 ),
                 "Return is_valid: false if the data cannot be extracted or the image is not a receipt.",
                 "Analyze this receipt image and extract the requested fields precisely.",
+                "If items appear double-counted, only include them once in the items list, adjust quantity as necessary.",
             ],
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
