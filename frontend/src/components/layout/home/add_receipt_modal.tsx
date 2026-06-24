@@ -21,11 +21,12 @@ import useSaveReceipt from './hooks/useSaveReceipt'
 import ImageInput from '#/components/ui/image_input'
 
 export default function AddReceiptModal() {
+  const [open, setOpen] = useState(false)
   const [step, setStep] = useState<'form' | 'confirmation'>('form')
   const [receipt, setReceipt] = useState<Receipt | null>(null)
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="ml-auto">
         <Button>Create new</Button>
       </DialogTrigger>
@@ -50,7 +51,10 @@ export default function AddReceiptModal() {
           />
         )}
         {step === 'confirmation' && (
-          <AddReceiptModal.ConfirmationStep receipt={receipt!} />
+          <AddReceiptModal.ConfirmationStep
+            receipt={receipt!}
+            onClose={() => setOpen(false)}
+          />
         )}
       </DialogContent>
     </Dialog>
@@ -94,9 +98,13 @@ AddReceiptModal.UploadImageStep = ({ onSuccess }: UploadImageStepProps) => {
 
 interface ConfirmationStepProps {
   receipt: Receipt
+  onClose?: () => void
 }
 
-AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
+AddReceiptModal.ConfirmationStep = ({
+  receipt,
+  onClose,
+}: ConfirmationStepProps) => {
   const { mutateAsync, isPending } = useSaveReceipt()
 
   async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
@@ -144,6 +152,8 @@ AddReceiptModal.ConfirmationStep = ({ receipt }: ConfirmationStepProps) => {
     }
 
     await mutateAsync(receiptData)
+
+    if (onClose) onClose()
   }
 
   return (

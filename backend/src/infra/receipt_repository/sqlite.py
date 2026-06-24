@@ -111,13 +111,14 @@ class SQLiteReceiptRepository(ReceiptRepository):
                 "DELETE FROM T001_RECEIPTS WHERE id = ?",
                 (str(receipt_id),),
             )
+
+            rows_deleted = cursor.rowcount
+
             cursor.execute(
                 "DELETE FROM T002_RECEIPT_ITEMS WHERE receipt_id = ?",
                 (str(receipt_id),),
             )
             conn.commit()
-
-        rows_deleted = cursor.rowcount  # type: ignore
 
         if rows_deleted == 0:
             raise ResourceNotFoundError(

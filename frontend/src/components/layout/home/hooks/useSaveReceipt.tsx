@@ -1,3 +1,4 @@
+import queryClient from '#/lib/queryClient'
 import { useMutation } from '@tanstack/react-query'
 
 import type { CreateReceiptDTO } from '../types/receipt'
@@ -5,10 +6,16 @@ import type { CreateReceiptDTO } from '../types/receipt'
 export default function useSaveReceipt(id?: string) {
   const update = useMutation({
     mutationFn: async (data: CreateReceiptDTO) => updateReceipt(id!, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['receipts'] })
+    },
   })
 
   const create = useMutation({
     mutationFn: async (data: CreateReceiptDTO) => createReceipt(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['receipts'] })
+    },
   })
 
   return id ? update : create

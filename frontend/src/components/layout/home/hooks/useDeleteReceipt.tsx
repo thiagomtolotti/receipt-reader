@@ -1,8 +1,12 @@
+import queryClient from '#/lib/queryClient'
 import { useMutation } from '@tanstack/react-query'
 
 export default function useDeleteReceipt() {
   return useMutation({
     mutationFn: deleteReceipt,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['receipts'] })
+    },
   })
 }
 

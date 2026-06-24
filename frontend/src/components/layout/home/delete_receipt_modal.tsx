@@ -17,17 +17,20 @@ import { Button } from '#/components/ui/button'
 import { Trash } from 'lucide-react'
 
 import useDeleteReceipt from './hooks/useDeleteReceipt'
+import { useState } from 'react'
 
 interface DeleteReceiptModalProps {
   id: string
 }
 
 export default function DeleteReceiptModal({ id }: DeleteReceiptModalProps) {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DeleteReceiptModal.Trigger />
 
-      <DeleteReceiptModal.Content id={id} />
+      <DeleteReceiptModal.Content id={id} onClose={() => setOpen(false)} />
     </Dialog>
   )
 }
@@ -47,8 +50,21 @@ DeleteReceiptModal.Trigger = () => {
   )
 }
 
-DeleteReceiptModal.Content = ({ id }: DeleteReceiptModalProps) => {
+interface DeleteReceiptModalContentProps {
+  id: string
+  onClose?: () => void
+}
+
+DeleteReceiptModal.Content = ({
+  id,
+  onClose,
+}: DeleteReceiptModalContentProps) => {
   const { mutateAsync, isPending } = useDeleteReceipt()
+
+  async function handleDelete() {
+    await mutateAsync(id)
+    onClose?.()
+  }
 
   return (
     <DialogContent className="p-8">
@@ -70,7 +86,7 @@ DeleteReceiptModal.Content = ({ id }: DeleteReceiptModalProps) => {
         <Button
           variant="destructive"
           loading={isPending}
-          onClick={() => mutateAsync(id)}
+          onClick={handleDelete}
         >
           Delete
         </Button>

@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useState } from 'react'
 
 import { Button } from '#/components/ui/button'
 import {
@@ -48,15 +48,24 @@ type ReceiptModalProps = ReceiptModalBaseProps &
 
 export default function ReceiptModal({
   receipt,
-  open,
-  setOpen,
+  open: externalOpen,
+  setOpen: externalSetOpen,
   isEnabled = true,
 }: ReceiptModalProps) {
+  const [_open, _setOpen] = useState(false)
+
+  const open = externalOpen ?? _open
+  const setOpen = externalSetOpen ?? _setOpen
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {open === undefined && <ReceiptModal.Trigger />}
+      {externalOpen === undefined && <ReceiptModal.Trigger />}
 
-      <ReceiptModal.Content receipt={receipt} isEnabled={isEnabled} />
+      <ReceiptModal.Content
+        receipt={receipt}
+        isEnabled={isEnabled}
+        onClose={() => setOpen(false)}
+      />
     </Dialog>
   )
 }
@@ -83,9 +92,14 @@ ReceiptModal.Trigger = forwardRef<
 interface ReceiptModalContentProps {
   receipt: Receipt
   isEnabled?: boolean
+  onClose?: () => void
 }
 
-ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
+ReceiptModal.Content = ({
+  receipt,
+  isEnabled,
+  onClose,
+}: ReceiptModalContentProps) => {
   const { mutateAsync, isPending } = useSaveReceipt(receipt.id)
 
   async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
@@ -133,6 +147,8 @@ ReceiptModal.Content = ({ receipt, isEnabled }: ReceiptModalContentProps) => {
     }
 
     await mutateAsync(data)
+
+    if (onClose) onClose
   }
 
   return (
