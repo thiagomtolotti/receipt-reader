@@ -68,7 +68,7 @@ export default function ImageInput({ file, onChange }: ImageInputProps) {
         />
 
         <div
-          className={`relative flex items-center justify-center w-full h-48 border-2 border-dashed border-border rounded-md bg-background overflow-hidden ${
+          className={`relative flex items-center justify-center w-full min-h-48 border-2 border-dashed border-border rounded-md bg-background overflow-hidden ${
             isDragging ? 'opacity-80 border-primary' : ''
           }`}
           onDrop={onDrop}
@@ -82,11 +82,7 @@ export default function ImageInput({ file, onChange }: ImageInputProps) {
             </div>
           ) : (
             <>
-              <img
-                src={preview}
-                alt="preview"
-                className="object-cover w-full h-full"
-              />
+              <img src={preview} alt="preview" className="max-w-80" />
               <Button
                 size="icon"
                 onClick={(e) => {
