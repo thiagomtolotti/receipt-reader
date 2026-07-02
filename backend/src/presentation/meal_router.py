@@ -1,4 +1,7 @@
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter, Depends, UploadFile
+
+from src.application.meal import MealService
+from src.dependencies import meal_service
 
 
 class MealRouter(APIRouter):
@@ -14,5 +17,10 @@ class MealRouter(APIRouter):
     def upload_image(
         self,
         file: UploadFile,
+        service: MealService = Depends(lambda: meal_service),
     ):
-        return {"message": f"Image {file.filename} uploaded successfully"}
+        file_bytes = file.file.read()
+
+        res = service.upload(file_bytes)
+
+        return {"message": res}
