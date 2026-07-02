@@ -1,25 +1,23 @@
-from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import UUID, uuid4
 
+from pydantic import BaseModel, Field
 
-@dataclass(frozen=True)
-class ReceiptItemDTO:
+
+class ReceiptItemDTO(BaseModel):
     name: str
     price: int
     quantity: int
 
 
-@dataclass(frozen=True)
-class ReceiptDTO:
+class ReceiptDTO(BaseModel):
     date: str
     store_name: str
     items: list[ReceiptItemDTO]
     total: int
 
 
-@dataclass(frozen=True)
-class ReceiptItem:
+class ReceiptItem(BaseModel):
     name: str
     price: int
     quantity: int
@@ -41,13 +39,12 @@ class ReceiptItem:
         )
 
 
-@dataclass(frozen=True)
-class Receipt:
+class Receipt(BaseModel):
     date: datetime
     store_name: str
     items: list[ReceiptItem]
     total: int
-    id: UUID = field(default_factory=uuid4)
+    id: UUID = Field(default_factory=uuid4)
 
     @classmethod
     def from_dto(cls, dto: ReceiptDTO, id: UUID | None = None) -> "Receipt":

@@ -6,7 +6,6 @@ from fastapi.responses import JSONResponse
 from scripts.migrate import migrate
 
 from src.constants import DB_PATH
-from src.infra.ai_repository.gemini import InvalidReceiptError
 from src.presentation.meal_router import MealRouter
 from src.presentation.receipt_router import ReceiptRouter
 
@@ -42,6 +41,3 @@ def invalid_receipt_exception_handler(_: Any, exc: Exception):
         status_code=status.HTTP_400_BAD_REQUEST,
         content={"detail": str(exc)},
     )
-
-
-app.add_exception_handler(InvalidReceiptError, invalid_receipt_exception_handler)

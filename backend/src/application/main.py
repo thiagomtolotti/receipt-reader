@@ -1,7 +1,7 @@
 from uuid import UUID
 
+from src.domain.interfaces import DocumentParser
 from src.domain.receipt import Receipt, ReceiptDTO
-from src.infra.ai_repository.types import AIRepository
 from src.infra.receipt_repository.types import ReceiptRepository
 
 
@@ -9,12 +9,8 @@ class ReceiptService:
     def __init__(self):
         pass
 
-    def upload(
-        self,
-        image: bytes,
-        ai_repo: AIRepository,
-    ) -> Receipt:
-        extracted_data = ai_repo.extract_receipt_data(image)
+    def upload(self, image: bytes, parser: DocumentParser) -> Receipt:
+        extracted_data = parser.parse_image(image, Receipt)
 
         return extracted_data
 

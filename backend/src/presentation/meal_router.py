@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, UploadFile
 
 from src.application.meal import MealService
-from src.dependencies import ai_repo, meal_service
-from src.infra.ai_repository.types import AIRepository
+from src.dependencies import document_parser, meal_service
+from src.domain.interfaces import DocumentParser
 
 
 class MealRouter(APIRouter):
@@ -19,10 +19,10 @@ class MealRouter(APIRouter):
         self,
         file: UploadFile,
         service: MealService = Depends(lambda: meal_service),
-        ai_repo: AIRepository = Depends(lambda: ai_repo),
+        document_parser: DocumentParser = Depends(lambda: document_parser),
     ):
         file_bytes = file.file.read()
 
-        res = service.upload(file_bytes, ai_repo)
+        res = service.upload(file_bytes, document_parser)
 
         return {"message": res}

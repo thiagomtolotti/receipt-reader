@@ -1,14 +1,12 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass(frozen=True)
-class MealItem:
+class MealItem(BaseModel):
     name: str
     calories: int
 
 
-@dataclass(frozen=True)
-class Meal:
+class Meal(BaseModel):
     name: str
     items: list[MealItem]
 
