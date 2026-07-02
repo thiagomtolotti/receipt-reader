@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile
 
 from src.application.meal import MealService
 from src.dependencies import meal_service
+from src.domain.meal import Meal, MealDTO
 
 
 class MealRouter(APIRouter):
@@ -12,6 +13,7 @@ class MealRouter(APIRouter):
             "/upload",
             self.upload_image,
             methods=["POST"],
+            response_model=MealDTO,
         )
 
     def upload_image(
@@ -23,4 +25,4 @@ class MealRouter(APIRouter):
 
         res = service.upload(file_bytes)
 
-        return {"message": res}
+        return Meal.to_dto(res)
