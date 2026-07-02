@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.domain.interfaces import DocumentParser
+from src.domain.interfaces.document_parser import DocumentParser
 from src.domain.receipt import Receipt, ReceiptDTO
 from src.infra.receipt_repository.types import ReceiptRepository
 

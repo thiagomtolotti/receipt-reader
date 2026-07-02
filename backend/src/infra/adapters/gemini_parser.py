@@ -3,7 +3,7 @@ from typing import Type, TypeVar
 from google import genai
 from pydantic import BaseModel, Field, TypeAdapter
 
-from src.domain.interfaces import DocumentParser
+from src.domain.interfaces.document_parser import DocumentParser
 
 T = TypeVar("T", bound=BaseModel)
 

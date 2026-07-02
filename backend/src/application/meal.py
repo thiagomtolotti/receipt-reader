@@ -1,4 +1,4 @@
-from src.domain.interfaces import DocumentParser
+from src.domain.interfaces.document_parser import DocumentParser
 from src.domain.meal import Meal
 
 

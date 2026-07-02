@@ -1,7 +1,7 @@
-from src.application.main import ReceiptService
 from src.application.meal import MealService
+from src.application.receipt import ReceiptService
 from src.constants import DB_PATH, GEMINI_API_KEY
-from src.domain.interfaces import DocumentParser
+from src.domain.interfaces.document_parser import DocumentParser
 from src.infra.adapters.gemini_parser import GeminiDocumentParser
 from src.infra.receipt_repository.sqlite import SQLiteReceiptRepository
 

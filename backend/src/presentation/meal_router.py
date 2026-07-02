@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile
 
 from src.application.meal import MealService
 from src.dependencies import document_parser, meal_service
-from src.domain.interfaces import DocumentParser
+from src.domain.interfaces.document_parser import DocumentParser
 
 
 class MealRouter(APIRouter):
