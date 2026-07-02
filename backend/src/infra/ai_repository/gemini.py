@@ -45,7 +45,7 @@ class GeminiAIRepository(AIRepository):
     def __init__(self, api_key: str):
         self.client = genai.Client(api_key=api_key)
 
-    def extract_data(self, image: bytes) -> Receipt:
+    def extract_receipt_data(self, image: bytes) -> Receipt:
         response = self.client.models.generate_content(  # type: ignore
             model="gemini-2.5-flash",
             contents=[

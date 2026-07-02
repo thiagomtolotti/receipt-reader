@@ -8,7 +8,7 @@ class InMemoryAIRepository(AIRepository):
     def __init__(self):
         self.data = {}
 
-    def extract_data(self, image: bytes) -> Receipt:
+    def extract_receipt_data(self, image: bytes) -> Receipt:
         return Receipt(
             date=datetime(2024, 1, 1),
             items=[ReceiptItem(name="Example Item", price=1000, quantity=1)],

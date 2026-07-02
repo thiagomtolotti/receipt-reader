@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, UploadFile
 
 from src.application.meal import MealService
-from src.dependencies import meal_service
+from src.dependencies import ai_repo, meal_service
+from src.infra.ai_repository.types import AIRepository
 
 
 class MealRouter(APIRouter):
@@ -18,9 +19,10 @@ class MealRouter(APIRouter):
         self,
         file: UploadFile,
         service: MealService = Depends(lambda: meal_service),
+        ai_repo: AIRepository = Depends(lambda: ai_repo),
     ):
         file_bytes = file.file.read()
 
-        res = service.upload(file_bytes)
+        res = service.upload(file_bytes, ai_repo)
 
         return {"message": res}

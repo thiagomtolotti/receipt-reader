@@ -1,8 +1,12 @@
+from src.application.main import AIRepository
+from src.domain.meal import Meal
+
+
 class MealService:
     def __init__(self):
         pass
 
-    def upload(self, file_bytes: bytes) -> str:
-        # Implement the logic to handle the uploaded image
-        # For now, just return a success message
-        return f"Image uploaded successfully with {len(file_bytes)} bytes!"
+    def upload(self, file_bytes: bytes, ai_repo: AIRepository) -> Meal:
+        extracted_data = ai_repo.extract_meal_data(file_bytes)
+
+        return extracted_data

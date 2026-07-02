@@ -14,7 +14,7 @@ class ReceiptService:
         image: bytes,
         ai_repo: AIRepository,
     ) -> Receipt:
-        extracted_data = ai_repo.extract_data(image)
+        extracted_data = ai_repo.extract_receipt_data(image)
 
         return extracted_data
 
