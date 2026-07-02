@@ -6,42 +6,39 @@ from src.infra.persistence.receipt.inmemory import ReceiptRepository
 
 
 class ReceiptService:
-    def __init__(self):
-        pass
+    def __init__(self, parser: DocumentParser, repository: ReceiptRepository):
+        self.parser = parser
+        self.repository = repository
 
-    def upload(self, image: bytes, parser: DocumentParser) -> Receipt:
-        extracted_data = parser.parse_image(image, Receipt)
+    def upload(self, image: bytes) -> Receipt:
+        extracted_data = self.parser.parse_image(image, Receipt)
 
         return extracted_data
 
     def list_receipts(
         self,
-        receipt_repo: ReceiptRepository,
     ) -> list[Receipt]:
-        return receipt_repo.list_()
+        return self.repository.list_()
 
     def delete_receipt(
         self,
         receipt_id: UUID,
-        receipt_repo: ReceiptRepository,
     ):
-        receipt_repo.delete(receipt_id)
+        self.repository.delete(receipt_id)
 
     def create_receipt(
         self,
         data: ReceiptDTO,
-        receipt_repo: ReceiptRepository,
     ):
         receipt = Receipt.from_dto(data)
 
-        receipt_repo.save(receipt)
+        self.repository.save(receipt)
 
     def update_receipt(
         self,
         id: UUID,
         data: ReceiptDTO,
-        receipt_repo: ReceiptRepository,
     ):
         receipt = Receipt.from_dto(data, id)
 
-        receipt_repo.update(receipt)
+        self.repository.update(receipt)

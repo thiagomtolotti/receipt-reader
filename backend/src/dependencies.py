@@ -8,6 +8,6 @@ from src.infra.persistence.receipt.sqlite import SQLiteReceiptRepository
 document_parser: DocumentParser = GeminiDocumentParser(api_key=GEMINI_API_KEY)
 
 receipt_repo = SQLiteReceiptRepository(db_path=DB_PATH)
-receipt_service = ReceiptService()
 
-meal_service = MealService()
+receipt_service = ReceiptService(document_parser, receipt_repo)
+meal_service = MealService(document_parser)
