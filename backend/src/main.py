@@ -7,6 +7,7 @@ from scripts.migrate import migrate
 
 from src.constants import DB_PATH
 from src.infra.ai_repository.gemini import InvalidReceiptError
+from src.presentation.meal_router import MealRouter
 from src.presentation.receipt_router import ReceiptRouter
 
 app = FastAPI()
@@ -31,6 +32,9 @@ def ping():
 
 receipt_router = ReceiptRouter()
 app.include_router(receipt_router)
+
+meal_router = MealRouter()
+app.include_router(meal_router)
 
 
 def invalid_receipt_exception_handler(_: Any, exc: Exception):
