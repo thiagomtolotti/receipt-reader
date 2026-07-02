@@ -3,10 +3,9 @@ from datetime import datetime
 from pathlib import Path
 from uuid import UUID
 
+from src.domain.interfaces.receipt_repository import ReceiptRepository
 from src.domain.receipt import Receipt, ReceiptItem
 from src.exceptions import ResourceNotFoundError
-
-from .types import ReceiptRepository
 
 
 class SQLiteReceiptRepository(ReceiptRepository):

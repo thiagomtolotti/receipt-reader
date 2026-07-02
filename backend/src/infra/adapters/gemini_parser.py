@@ -20,7 +20,7 @@ class GeminiDocumentParser(DocumentParser):
         self.client = genai.Client(api_key=api_key)
 
     def parse_image(self, bytes: bytes, target_model: Type[T]) -> T:
-        adapter = TypeAdapter(GeminiResponseSchema[target_model])
+        adapter = TypeAdapter(GeminiResponseSchema[target_model])  # type: ignore
 
         response = self.client.models.generate_content(  # type: ignore
             model="gemini-2.5-flash",

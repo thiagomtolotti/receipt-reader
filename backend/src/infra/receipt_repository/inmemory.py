@@ -1,5 +1,5 @@
 from src.domain.receipt import Receipt
-from src.infra.receipt_repository.types import ReceiptRepository
+from src.infra.receipt_repository.sqlite import ReceiptRepository
 
 
 class InMemoryReceiptRepository(ReceiptRepository):

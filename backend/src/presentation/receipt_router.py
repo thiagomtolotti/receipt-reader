@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends, UploadFile
 from src.application.receipt import ReceiptService
 from src.dependencies import receipt_repo, receipt_service
 from src.domain.interfaces.document_parser import DocumentParser
+from src.domain.interfaces.receipt_repository import ReceiptRepository
 from src.domain.receipt import Receipt, ReceiptDTO
-from src.infra.receipt_repository.types import ReceiptRepository
 from src.presentation.meal_router import document_parser
 
 
