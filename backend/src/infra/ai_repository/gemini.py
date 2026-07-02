@@ -47,7 +47,7 @@ class GeminiAIRepository(AIRepository):
 
     def extract_data(self, image: bytes) -> Receipt:
         response = self.client.models.generate_content(  # type: ignore
-            model="gemini-2.5-flash-lite",
+            model="gemini-2.5-flash",
             contents=[
                 types.Part.from_bytes(
                     data=image,
