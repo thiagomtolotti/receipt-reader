@@ -2,7 +2,7 @@ from uuid import UUID
 
 from src.domain.interfaces.document_parser import DocumentParser
 from src.domain.receipt import Receipt, ReceiptDTO
-from src.infra.receipt_repository.inmemory import ReceiptRepository
+from src.infra.persistence.receipt.inmemory import ReceiptRepository
 
 
 class ReceiptService:
